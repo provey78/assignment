@@ -7,55 +7,113 @@ int avgNum;
 int minNum;
 int maxNum;
 
-// Functions' declaration. Definition is at the bottom. Do not change the declaration of these functions.
-void *avgfunc(void *param);
-void *minfunc(void *param);
-void *maxfunc(void *param);
+ // Define a struct to pass multiple arguments to the thread functions
+   struct ThreadParams {
+     int argc;
+      char** argv;
+};
 
-int main(int argc, char* argv[])
-{
- 
- /* Create thread IDs */
+ // Functions' declaration. Definition is at the bottom. Do not change the declaration of these functions.
+ void *avgfunc(void *param);
+  void *minfunc(void *param);
+ void *maxfunc(void *param);
 
+ int main(int argc, char* argv[])
+ {
+    // numbers provided as command line arguments
+    // these are the numbers that the program will use to perform calculations
+  const char* numbers[] = {"averagecalc", "90", "81", "78", "95", "79", "72", "85"};
 
-/* Create thread attributes */
+    // Create thread IDs
+    pthread_t avgThread, minThread, maxThread;
 
+    // Create thread attributes
+    pthread_attr_t attr;
 
-/* Initialize thread attributes */
+    // Initialize thread attributes
+    pthread_attr_init(&attr);
 
+    // Create threads and pass argc and argv as arguments
+    struct ThreadParams params;
+    params.argc = sizeof(numbers) / sizeof(numbers[0]);
+    params.argv = (char**)numbers;
 
-/* Create threads */
+    pthread_create(&avgThread, &attr, avgfunc, &params);
+    pthread_create(&minThread, &attr, minfunc, &params);
+    pthread_create(&maxThread, &attr, maxfunc, &params);
 
+    // Wait for threads to exit
+    pthread_join(avgThread, NULL);
+    pthread_join(minThread, NULL);
+    pthread_join(maxThread, NULL);
 
-/* Wait for threads to exit */
+    // Destroy thread attributes
+    pthread_attr_destroy(&attr);
 
+    // Printing the results. Do not change this line
+    printf("Average: %d\nMinimum: %d\nMaximum: %d\n", avgNum, minNum, maxNum);
 
-// Printing the results. Do not change this line
-printf("%d %d %d", avgNum, minNum, maxNum);
+    return 0;
 }
 
-void *avgfunc(void *param)
+   void *avgfunc(void *param)
 {
-    /* Write the code to calculate the average value and store it in avgNum variable. */
-    /* Hint: the numbers supplied on the command line as arguments are passed to this function through the pointer param. You need to find a way to access
-    these numbers through the pointer param */ 
+    struct ThreadParams* params = (struct ThreadParams*)param;
+    char** args = params->argv;
 
+    // Initialize variables for calculating the average
+    int sum = 0;
+    int count = 0;
+
+    // Loop through the arguments and calculate the sum and count
+    for (int i = 1; i < params->argc; i++) {
+        sum += atoi(args[i]);
+        count++;
+    }
+
+    // Calculate and store the average if count is not zero
+    if (count != 0) {
+        avgNum = sum / count;
+    }
+
+    pthread_exit(NULL);
 }
 
 void *minfunc(void *param)
 {  
-    /* Write the code to calculate the minimum value and store it in minNum variable */
-    /* Hint: the numbers supplied on the command line as arguments are passed to this function through the pointer param. You need to find a way to access
-    these numbers through the pointer param */ 
- 
- 
+    struct ThreadParams* params = (struct ThreadParams*)param;
+    char** args = params->argv;
+
+    // Initialize variable for storing the minimum value
+    minNum = atoi(args[1]); // Initialize with the first argument
+
+    // Loop through the arguments and find the minimum
+    for (int i = 1; i < params->argc; i++) {
+        int num = atoi(args[i]);
+        if (num < minNum) {
+            minNum = num;
+        }
+    }
+
+    pthread_exit(NULL);
 }
 
 void *maxfunc(void *param)
 {
-    /* Write the code to calculate the maximum value and store it in maxNum variable */
-    /* Hint: the numbers supplied on the command line as arguments are passed to this function through the pointer param. You need to find a way to access
-    these numbers through the pointer param */ 
- 
- 
+    struct ThreadParams* params = (struct ThreadParams*)param;
+    char** args = params->argv;
+
+    // Initialize variable for storing the maximum value
+    maxNum = atoi(args[1]); // Initialize with the first argument
+
+    // Loop through the arguments and find the maximum
+    for (int i = 1; i < params->argc; i++) {
+        int num = atoi(args[i]);
+        if (num > maxNum) {
+            maxNum = num;
+        }
+    }
+
+    pthread_exit(NULL);
 }
+
