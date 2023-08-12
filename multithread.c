@@ -2,27 +2,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Variables that hold the final results, integer data type for simplicity. Do not change these variables.
-int avgNum;
-int minNum;
-int maxNum;
+ // Variables that hold the final results, integer data type for simplicity. Do not change these variables.
+  int avgNum;
+ int minNum;
+   int maxNum;
 
- // Define a struct to pass multiple arguments to the thread functions
-   struct ThreadParams {
+ //pass multiple arguments to the thread functions
+  struct ThreadParams {
      int argc;
-      char** argv;
-};
+     char** argv;
+ };
 
- // Functions' declaration. Definition is at the bottom. Do not change the declaration of these functions.
- void *avgfunc(void *param);
-  void *minfunc(void *param);
- void *maxfunc(void *param);
+// Functions' declaration. Definition is at the bottom. Do not change the declaration of these functions.
+void *avgfunc(void *param);
+void *minfunc(void *param);
+void *maxfunc(void *param);
 
- int main(int argc, char* argv[])
- {
+int main(int argc, char* argv[])
+{
     // numbers provided as command line arguments
     // these are the numbers that the program will use to perform calculations
-  const char* numbers[] = {"averagecalc", "90", "81", "78", "95", "79", "72", "85"};
+    const char* numbers[] = {"averagecalc", "90", "81", "78", "95", "79", "72", "85"};
 
     // Create thread IDs
     pthread_t avgThread, minThread, maxThread;
@@ -55,13 +55,13 @@ int maxNum;
 
     return 0;
 }
-
+      // This thread function will calculate the average from command line nu 
    void *avgfunc(void *param)
 {
     struct ThreadParams* params = (struct ThreadParams*)param;
     char** args = params->argv;
 
-    // Initialize variables for calculating the average
+      // Initialize variables for calculating the average
     int sum = 0;
     int count = 0;
 
@@ -71,7 +71,7 @@ int maxNum;
         count++;
     }
 
-    // Calculate and store the average if count is not zero
+    // Calculate and store the average if not zero
     if (count != 0) {
         avgNum = sum / count;
     }
