@@ -13,7 +13,6 @@ int maxNum;
       char** argv;
 };
 
-
  // Functions' declaration. Definition is at the bottom. Do not change the declaration of these functions.
  void *avgfunc(void *param);
   void *minfunc(void *param);
