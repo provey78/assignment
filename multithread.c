@@ -63,7 +63,7 @@ void *avgfunc(void *param)
 
     // Loop through the arguments and calculate the sum and count
     for (int i = 1; i < params->argc; i++) {
-        sum += atoi(args[i]);
+        sum += atoi(args[i]);   // convert string to integer
         count++;
     }
 
@@ -81,11 +81,13 @@ void *minfunc(void *param)
     char** args = params->argv;
 
     // Initialize variable for storing the minimum value
-    minNum = atoi(args[1]); // Initialize with the first argument
+    minNum = atoi(args[1]); // Initialize with the first argument  
+    // convert string to integer
+
 
     // Loop through the arguments and find the minimum
     for (int i = 1; i < params->argc; i++) {
-        int num = atoi(args[i]);
+        int num = atoi(args[i]);  // convert string to integer
         if (num < minNum) {
             minNum = num;
         }
@@ -104,7 +106,7 @@ void *maxfunc(void *param)
 
     // Loop through the arguments and find the maximum
     for (int i = 1; i < params->argc; i++) {
-        int num = atoi(args[i]);
+        int num = atoi(args[i]); // convert string to integer
         if (num > maxNum) {
             maxNum = num;
         }
@@ -112,4 +114,5 @@ void *maxfunc(void *param)
 
     pthread_exit(NULL);
 }
+
 
