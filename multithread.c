@@ -2,16 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
- // Variables that hold the final results, integer data type for simplicity. Do not change these variables.
-  int avgNum;
- int minNum;
-   int maxNum;
+// Variables that hold the final results, integer data type for simplicity. Do not change these variables.
+int avgNum;
+int minNum;
+int maxNum;
 
- //pass multiple arguments to the thread functions
-  struct ThreadParams {
-     int argc;
-     char** argv;
- };
+// Define a struct to pass multiple arguments to the thread functions
+struct ThreadParams {
+    int argc;
+    char** argv;
+};
 
 // Functions' declaration. Definition is at the bottom. Do not change the declaration of these functions.
 void *avgfunc(void *param);
@@ -20,10 +20,6 @@ void *maxfunc(void *param);
 
 int main(int argc, char* argv[])
 {
-    // numbers provided as command line arguments
-    // these are the numbers that the program will use to perform calculations
-    const char* numbers[] = {"averagecalc", "90", "81", "78", "95", "79", "72", "85"};
-
     // Create thread IDs
     pthread_t avgThread, minThread, maxThread;
 
@@ -35,8 +31,8 @@ int main(int argc, char* argv[])
 
     // Create threads and pass argc and argv as arguments
     struct ThreadParams params;
-    params.argc = sizeof(numbers) / sizeof(numbers[0]);
-    params.argv = (char**)numbers;
+    params.argc = argc;
+    params.argv = argv;
 
     pthread_create(&avgThread, &attr, avgfunc, &params);
     pthread_create(&minThread, &attr, minfunc, &params);
@@ -55,13 +51,13 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-      // This thread function will calculate the average from command line nu 
-   void *avgfunc(void *param)
+
+void *avgfunc(void *param)
 {
     struct ThreadParams* params = (struct ThreadParams*)param;
     char** args = params->argv;
 
-      // Initialize variables for calculating the average
+    // Initialize variables for calculating the average
     int sum = 0;
     int count = 0;
 
@@ -71,7 +67,7 @@ int main(int argc, char* argv[])
         count++;
     }
 
-    // Calculate and store the average if not zero
+    // Calculate and store the average if count is not zero
     if (count != 0) {
         avgNum = sum / count;
     }
