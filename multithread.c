@@ -9,8 +9,8 @@ int maxNum;
 
 // Define a struct to pass multiple arguments to the thread functions
 struct ThreadParams {
-    int argc;
-    char** argv;
+    int argc;   
+    char** argv;   // array of cammand line argument strings
 };
 
 // Functions' declaration. Definition is at the bottom. Do not change the declaration of these functions.
@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 
     // Create threads and pass argc and argv as arguments
     struct ThreadParams params;
-    params.argc = argc;
-    params.argv = argv;
+    params.argc = argc;    //store the number of command-line arguments
+    params.argv = argv;  //store the array of cammand-line  argument strings 
 
     pthread_create(&avgThread, &attr, avgfunc, &params);
     pthread_create(&minThread, &attr, minfunc, &params);
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-
+// function to calc average
 void *avgfunc(void *param)
 {
     struct ThreadParams* params = (struct ThreadParams*)param;
@@ -74,7 +74,7 @@ void *avgfunc(void *param)
 
     pthread_exit(NULL);
 }
-
+//function to calc minimum 
 void *minfunc(void *param)
 {  
     struct ThreadParams* params = (struct ThreadParams*)param;
@@ -95,7 +95,7 @@ void *minfunc(void *param)
 
     pthread_exit(NULL);
 }
-
+  //function to calculate maximum
 void *maxfunc(void *param)
 {
     struct ThreadParams* params = (struct ThreadParams*)param;
@@ -106,7 +106,7 @@ void *maxfunc(void *param)
 
     // Loop through the arguments and find the maximum
     for (int i = 1; i < params->argc; i++) {
-        int num = atoi(args[i]); // convert string to integer
+        int num = atoi(args[i]); // convert string to integer using atoi
         if (num > maxNum) {
             maxNum = num;
         }
@@ -114,5 +114,3 @@ void *maxfunc(void *param)
 
     pthread_exit(NULL);
 }
-
-
